@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify
 
 social_bp = Blueprint("social", __name__)
 
-# --- JSON endpoint ---
-@social_bp.route("/social")
-def social():
+# JSON endpoint at /social
+@social_bp.route("/", methods=["GET"])
+def social_root():
     dry_run = True
     configured = False
 
@@ -29,8 +29,8 @@ def social():
     })
 
 
-# --- HTML preview endpoint ---
-@social_bp.route("/social/preview")
+# HTML preview at /social/preview
+@social_bp.route("/preview", methods=["GET"])
 def social_preview():
     draft_posts = [
         "🚀 Abducted Memories is live — a mind-bending thriller you won’t put down. #SciFi #Thriller",
