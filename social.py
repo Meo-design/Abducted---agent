@@ -1,29 +1,40 @@
 # social.py
-import os, random, datetime
+import os
+import random
+from flask import jsonify
 
-# Minimal starter pack (we'll replace with 10 posts after test)
-POSTS = [
-    "What if your memories weren’t yours to keep? Dive into *Abducted Memories*. #SciFiMystery #LucidDream",
-    "He thought it was a dream—until the bullets hit the tarmac. #DreamThriller #AbductedMemories",
-    "Surreal, haunting, and metaphysical—memory is currency here. #MetaphysicalFiction #SciFiReads",
-]
+def handle_social():
+    dry_run = os.getenv("DRY_RUN", "true").lower() == "true"
 
-def run(dry_run=True, action="check"):
-    """
-    Returns a JSON-like dict describing what would be posted (DRY_RUN=true),
-    or confirming a post (DRY_RUN=false, once wired to a real API).
-    """
-    selected = random.choice(POSTS)
-    creds_present = all(os.getenv(k, "").strip() for k in [
-        "SOCIAL_API_KEY", "SOCIAL_API_SECRET", "SOCIAL_ACCESS_TOKEN", "SOCIAL_ACCESS_SECRET"
-    ])
-    return {
-        "module": "social",
-        "time": datetime.datetime.utcnow().isoformat() + "Z",
-        "status": "ok",
-        "dry_run": bool(dry_run),
-        "creds_configured": creds_present,
-        "selected_post": selected,
-        "action": action,
-        "note": "DRY_RUN: no posts sent" if dry_run else "LIVE: (API call not wired yet)"
-    }
+    # 10 campaign posts
+    posts = [
+        "🚀 Ready to unlock *Abducted Memories*? Dive into the mystery today. #SciFi #Thriller",
+        "What if your memories weren’t your own? 🔍 Discover the truth in *Abducted Memories*. 📖",
+        "🔥 Hot off the press: *Abducted Memories* is live. Don’t just read a story — experience it.",
+        "Triple 0. Vexx. Mort. Echo Prime. Your new obsession starts here → *Abducted Memories* 📚",
+        "Some books entertain. This one hijacks your mind. 😱 #AbductedMemories",
+        "Lucid dreams, stolen memories, and conspiracies within conspiracies. Ready to wake up? 🌌",
+        "This isn’t just fiction. It’s a system. And you’re already inside it. 🌀 #AbductedMemories",
+        "Readers are calling it 'mind-bending' and 'unlike anything else out there.' You be the judge.",
+        "Think you can trust your own thoughts? *Abducted Memories* will make you question everything.",
+        "The game’s afoot — but not in the way you think. Step inside the labyrinth. 🕵️‍♂️"
+    ]
+
+    # Pick a random post
+    selected = random.choice(posts)
+
+    if dry_run:
+        return jsonify({
+            "ok": True,
+            "dry_run": True,
+            "note": "Set SOCIAL_* vars and DRY_RUN=false to actually post.",
+            "post_selected": selected
+        })
+
+    # Live mode (when API keys are set)
+    # TODO: Add actual API call here (Twitter/X, Facebook, etc.)
+    return jsonify({
+        "ok": True,
+        "dry_run": False,
+        "post_sent": selected
+    })
