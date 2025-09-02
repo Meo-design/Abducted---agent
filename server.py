@@ -1,12 +1,11 @@
-f# server.py
+# server.py
 from flask import Flask, jsonify
-from social import social_bp          # 1) import blueprint
+from social import social_bp  # import the blueprint
 
-app = Flask(__name__)                 # 2) create app
+app = Flask(__name__)         # create the Flask app
 
-# ... any other setup (env, logging, etc.) ...
-
-app.register_blueprint(social_bp, url_prefix="/social")  # 3) register blueprint AFTER app exists
+# register the blueprint AFTER app exists
+app.register_blueprint(social_bp, url_prefix="/social")
 
 
 @app.route("/")
@@ -22,10 +21,18 @@ def home():
         "</ul>"
     )
 
+
 @app.route("/health")
 def health():
     return jsonify(ok=True)
 
-# local debug only (Render ignores this)
+
+@app.route("/dashboard")
+def dashboard():
+    return jsonify(status="online", message="Dashboard placeholder")
+
+
+# local run only (ignored on Render)
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
+
