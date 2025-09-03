@@ -1,8 +1,9 @@
 # social.py
+from flask import Blueprint, jsonify, request
 import os
-from flask import Blueprint, jsonify
+import requests
+from requests_oauthlib import OAuth1
 
-social_bp = Blueprint("social", __name__)
 
 DRAFT_POSTS = [
     "👽 Day 1: A shadow over New Austin… #AbductedMemories",
