@@ -1,6 +1,21 @@
 # server.py
 from flask import Flask, jsonify
-from social import social_bp  # import the blueprint
+import logging
+
+def as_bool(val, default=False):
+    if val is None:
+        return default
+    return str(val).strip().lower() in ("1", "true", "yes", "y", "on")
+
+def get_dry_run():
+    # Always re-check the env var when called
+    return as_bool(os.getenv("DRY_RUN"), default=False)
+
+# Log once at boot what we see in the env
+logging.basicConfig(level=logging.INFO)
+logging.info("Boot config -> DRY_RUN raw=%r parsed=%s",
+             os.getenv("DRY_RUN"), as_bool(os.getenv("DRY_RUN"), default=False))
+ social import social_bp  # import the blueprint
 
 app = Flask(__name__)         # create the Flask app
 
