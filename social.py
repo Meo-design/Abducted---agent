@@ -20,7 +20,8 @@ DRAFT_POSTS = [
 def social_root():
     return jsonify(
         ok=True,
-        dry_run=True,
+dry_run = get_dry_run()
+dry_run=True,
         social_configured=False,
         posts=DRAFT_POSTS
     )
